@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class OrderReceipt {
     private Order order;
-    private double totSalesTx = 0d;
-    private double tot = 0d;
+    private double totalSalesTax = 0d;
+    private double totalAmount = 0d;
 
     public OrderReceipt(Order order) {
         this.order = order;
@@ -24,30 +24,30 @@ public class OrderReceipt {
 
 		appendHeader(output);
 		appendCustomerDetails(output);
-        appendLineItems(output, order.getLineItems());
-        appendStateTax(output, totSalesTx);
-		appendTotalAmount(output, tot);
+        appendLineItems(output);
+        appendSalesTax(output);
+		appendTotalAmount(output);
 		return output.toString();
 	}
 
     public void calculate() {
         for (LineItem lineItem : order.getLineItems()) {
             double salesTax = lineItem.totalAmount() * .10;
-            totSalesTx += salesTax;
+            totalSalesTax += salesTax;
 
-            tot += lineItem.totalAmount() + salesTax;
+            totalAmount += lineItem.totalAmount() + salesTax;
         }
     }
 
-    public void appendTotalAmount(StringBuilder output, double tot) {
-		output.append("Total Amount").append('\t').append(tot);
+    public void appendTotalAmount(StringBuilder output) {
+		output.append("Total Amount").append('\t').append(totalAmount);
 	}
 
-	public void appendStateTax(StringBuilder output, double totSalesTx) {
-		output.append("Sales Tax").append('\t').append(totSalesTx);
+	public void appendSalesTax(StringBuilder output) {
+		output.append("Sales Tax").append('\t').append(totalSalesTax);
 	}
 
-	public void appendLineItems(StringBuilder output, List<LineItem> lineItems) {
+	public void appendLineItems(StringBuilder output) {
 		for (LineItem lineItem : order.getLineItems()) {
 			output.append(lineItem.getDescription());
 			output.append('\t');
