@@ -14,6 +14,8 @@ public class OrderReceipt {
     private double totalSalesTax = 0d;
     private double totalAmount = 0d;
 
+    public final static double SALES_TAX_RATE = .10;
+
     public OrderReceipt(Order order) {
         this.order = order;
 	}
@@ -31,12 +33,9 @@ public class OrderReceipt {
 	}
 
     private void calculate() {
-        for (LineItem lineItem : order.getLineItems()) {
-            double salesTax = lineItem.totalAmount() * .10;
-            totalSalesTax += salesTax;
-
-            totalAmount += lineItem.totalAmount() + salesTax;
-        }
+        double totalOrderAmount = order.getTotalAmount();
+        totalSalesTax = totalOrderAmount * SALES_TAX_RATE;
+        totalAmount = totalOrderAmount + totalSalesTax;
     }
 
     private void appendTotalAmount(StringBuilder output) {

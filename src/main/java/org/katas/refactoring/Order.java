@@ -18,4 +18,17 @@ public class Order {
     public List<LineItem> getLineItems() {
         return lineItems;
     }
+
+    public double getTotalAmount() {
+        if (lineItems == null) {
+            return 0;
+        }
+
+        double totalAmount = 0;
+        for (LineItem lineItem: lineItems) {
+            totalAmount += lineItem.totalAmount();
+        }
+        return totalAmount;
+    }
+
 }
