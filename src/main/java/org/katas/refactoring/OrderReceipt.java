@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class OrderReceipt {
     private Order order;
+    private double totSalesTx = 0d;
+    private double tot = 0d;
 
     public OrderReceipt(Order order) {
         this.order = order;
@@ -18,28 +20,26 @@ public class OrderReceipt {
 
 	public String printReceipt() {
 		StringBuilder output = new StringBuilder();
+        calculate();
 
 		appendHeader(output);
 		appendCustomerDetails(output);
-
         appendLineItems(output, order.getLineItems());
-		double totSalesTx = 0d;
-		double tot = 0d;
-		for (LineItem lineItem : order.getLineItems()) {
-			// calculate sales tax @ rate of 10%
-            double salesTax = lineItem.totalAmount() * .10;
-            totSalesTx += salesTax;
-
-            // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            tot += lineItem.totalAmount() + salesTax;
-		}
-
-		appendStateTax(output, totSalesTx);
+        appendStateTax(output, totSalesTx);
 		appendTotalAmount(output, tot);
 		return output.toString();
 	}
 
-	public void appendTotalAmount(StringBuilder output, double tot) {
+    public void calculate() {
+        for (LineItem lineItem : order.getLineItems()) {
+            double salesTax = lineItem.totalAmount() * .10;
+            totSalesTx += salesTax;
+
+            tot += lineItem.totalAmount() + salesTax;
+        }
+    }
+
+    public void appendTotalAmount(StringBuilder output, double tot) {
 		output.append("Total Amount").append('\t').append(tot);
 	}
 
