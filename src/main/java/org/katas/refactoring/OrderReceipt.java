@@ -22,8 +22,8 @@ public class OrderReceipt {
 
 		// print date, bill no, customer name
 //        output.append("Date - " + order.getDate();
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
+        output.append(order.getCustomer().getName());
+        output.append(order.getCustomer().getAddress());
 //        output.append(order.getCustomerLoyaltyNumber());
 
 		// prints lineItems
